@@ -41,7 +41,6 @@ class Player {
 
         if (this.position.y + this.height + this.velocity.y <= canvas.height)
             this.velocity.y += gravity;
-        else this.velocity.y = 0;
     }
 }
 
@@ -83,17 +82,25 @@ function createImage(imageSrc) {
 
     return image;
 }
+let platformImage = createImage(platform);
 
-const player = new Player();
+let player = new Player();
 
-const platformImage = createImage(platform);
-
-const platforms = [
+let platforms = [
     new Platform({ x: 0, y: 470, image: platformImage }),
-    new Platform({ x: platformImage.width - 3, y: 470, image: platformImage }),
+    new Platform({
+        x: platformImage.width - 3,
+        y: 470,
+        image: platformImage,
+    }),
+    new Platform({
+        x: platformImage.width * 2 + 100,
+        y: 470,
+        image: platformImage,
+    }),
 ];
 
-const genericObjects = [
+let genericObjects = [
     new GenericObject({
         x: -1,
         y: -1,
@@ -116,6 +123,41 @@ const keys = {
 };
 
 let scrollOffset = 0;
+
+function init() {
+    platformImage = createImage(platform);
+
+    player = new Player();
+
+    platforms = [
+        new Platform({ x: 0, y: 470, image: platformImage }),
+        new Platform({
+            x: platformImage.width - 3,
+            y: 470,
+            image: platformImage,
+        }),
+        new Platform({
+            x: platformImage.width * 2 + 100,
+            y: 470,
+            image: platformImage,
+        }),
+    ];
+
+    genericObjects = [
+        new GenericObject({
+            x: -1,
+            y: -1,
+            image: createImage(background),
+        }),
+        new GenericObject({
+            x: -1,
+            y: -1,
+            image: createImage(hills),
+        }),
+    ];
+
+    scrollOffset = 0;
+}
 
 function animate() {
     requestAnimationFrame(animate);
@@ -159,8 +201,14 @@ function animate() {
             });
         }
 
+        //win condition
         if (scrollOffset > 2000) {
             console.log("YOU WIN!");
+        }
+
+        //lose condition
+        if (player.position.y > canvas.height) {
+            init();
         }
     }
 
