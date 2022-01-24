@@ -191,11 +191,6 @@ function animate() {
         player.width = player.sprites.stand.width;
     }
 
-    //win condition
-    if (scrollOffset > platformImage.width * 5 + 300 - 2) {
-        console.log("YOU WIN!");
-    }
-
     //lose condition
     if (player.position.y + player.height > canvas.height) {
         init();

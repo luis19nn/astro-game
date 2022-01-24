@@ -536,11 +536,6 @@ function animate() {
     player.currentSprite = player.sprites.stand.left;
     player.currentCropWidth = player.sprites.stand.cropWidth;
     player.width = player.sprites.stand.width;
-  } //win condition
-
-
-  if (scrollOffset > platformImage.width * 5 + 300 - 2) {
-    console.log("YOU WIN!");
   } //lose condition
 
 
