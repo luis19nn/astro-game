@@ -1,148 +1,31 @@
+//classes
+import { Player } from "./Player";
+import { Platform } from "./Platform";
+import { GenericObject } from "./GenericObject";
+
+//utils
+import { canvas, context, createImage } from "./utils";
+
+//background images
 import platform from "../img/platform.png";
 import hills from "../img/hills.png";
 import background from "../img/background.png";
 import platformSmallTall from "../img/platformSmallTall.png";
 
-import spriteRunLeft from "../img/spriteRunLeft.png";
-import spriteRunRight from "../img/spriteRunRight.png";
-import spriteStandLeft from "../img/spriteStandLeft.png";
-import spriteStandRight from "../img/spriteStandRight.png";
-
-const canvas = document.querySelector("canvas");
-const context = canvas.getContext("2d");
-
+//canvas configuration
 canvas.width = 1024;
 canvas.height = 576;
 
-const gravity = 1.5;
-
-class Player {
-    constructor() {
-        this.position = {
-            x: 100,
-            y: 100,
-        };
-
-        this.velocity = {
-            x: 0,
-            y: 0,
-        };
-
-        this.speed = 10;
-
-        this.width = 66;
-        this.height = 150;
-
-        this.frames = 0;
-        this.sprites = {
-            stand: {
-                right: createImage(spriteStandRight),
-                left: createImage(spriteStandLeft),
-                cropWidth: 177,
-                width: 66,
-            },
-            run: {
-                right: createImage(spriteRunRight),
-                left: createImage(spriteRunLeft),
-                cropWidth: 341,
-                width: 127.875,
-            },
-        };
-
-        this.currentSprite = this.sprites.stand.right;
-        this.currentCropWidth = this.sprites.stand.cropWidth;
-    }
-
-    draw() {
-        context.drawImage(
-            this.currentSprite,
-            this.currentCropWidth * this.frames,
-            0,
-            this.currentCropWidth,
-            400,
-            this.position.x,
-            this.position.y,
-            this.width,
-            this.height
-        );
-    }
-
-    update() {
-        this.frames++;
-
-        if (
-            this.frames > 59 &&
-            (this.currentSprite === this.sprites.stand.right ||
-                this.currentSprite === this.sprites.stand.left)
-        ) {
-            this.frames = 0;
-        } else if (
-            this.frames > 29 &&
-            (this.currentSprite === this.sprites.run.right ||
-                this.currentSprite === this.sprites.run.left)
-        ) {
-            this.frames = 0;
-        }
-
-        this.draw();
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-
-        if (this.position.y + this.height + this.velocity.y <= canvas.height)
-            this.velocity.y += gravity;
-    }
-}
-
-class Platform {
-    constructor({ x, y, image }) {
-        this.position = {
-            x,
-            y,
-        };
-        this.image = image;
-        this.width = image.width;
-        this.height = image.height;
-    }
-
-    draw() {
-        context.drawImage(this.image, this.position.x, this.position.y);
-    }
-}
-
-class GenericObject {
-    constructor({ x, y, image }) {
-        this.position = {
-            x,
-            y,
-        };
-        this.image = image;
-        this.width = image.width;
-        this.height = image.height;
-    }
-
-    draw() {
-        context.drawImage(this.image, this.position.x, this.position.y);
-    }
-}
-
-function createImage(imageSrc) {
-    const image = new Image();
-    image.src = imageSrc;
-
-    return image;
-}
+//initialization of some variables
 let platformImage = createImage(platform);
 let platformSmallTallImage = createImage(platformSmallTall);
 
 let player = new Player();
-
 let platforms = [];
-
 let genericObjects = [];
 
-let lastKey;
-
 let collisionPlayerAndPlatform = false;
+let lastKey;
 
 const keys = {
     right: {
@@ -156,9 +39,9 @@ const keys = {
 let scrollOffset = 0;
 
 function init() {
-    platformImage = createImage(platform);
-
     player = new Player();
+
+    platformImage = createImage(platform);
 
     platforms = [
         new Platform({
@@ -209,6 +92,7 @@ function init() {
 
     scrollOffset = 0;
 }
+init();
 
 function animate() {
     requestAnimationFrame(animate);
@@ -317,7 +201,6 @@ function animate() {
         init();
     }
 }
-init();
 animate();
 
 window.addEventListener("keydown", ({ keyCode }) => {

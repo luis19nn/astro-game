@@ -1,16 +1,11 @@
-function randomIntFromRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+//canvas and context creation
+export const canvas = document.querySelector("canvas");
+export const context = canvas.getContext("2d");
+
+//function for creation of images
+export function createImage(imageSrc) {
+    const image = new Image();
+    image.src = imageSrc;
+
+    return image;
 }
-
-function randomColor(colors) {
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-function distance(x1, y1, x2, y2) {
-    const xDist = x2 - x1;
-    const yDist = y2 - y1;
-
-    return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-}
-
-module.exports = { randomIntFromRange, randomColor, distance };
